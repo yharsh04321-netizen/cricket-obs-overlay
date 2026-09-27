@@ -1,307 +1,770 @@
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 
 <title>Cricket Live Score</title>
 
 <style>
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
 }
 
-body {
-    background: transparent;
-    font-family: Arial, Helvetica, sans-serif;
-    overflow: hidden;
-    color: white;
+html,body{
+    width:100%;
+    height:100%;
+    overflow:hidden;
+    background:transparent;
+    font-family:Arial,Helvetica,sans-serif;
+    color:white;
 }
 
-/* MAIN SCOREBOARD */
+.container{
+    width:1920px;
+    min-height:1080px;
+    padding:20px;
+}
 
-.scoreboard {
-    width: 1000px;
-    min-height: 190px;
-    margin: 40px auto;
+/* TOP */
+
+.top{
+    height:190px;
+    display:grid;
+    grid-template-columns:1fr 420px 1fr;
+    gap:12px;
+}
+
+.team{
+    position:relative;
+    overflow:hidden;
+    border:3px solid #ffd92f;
+    border-radius:18px;
+    background:linear-gradient(135deg,#061b42,#0870b5,#061b42);
+    box-shadow:0 5px 20px #0008;
+}
+
+.team2{
+    background:linear-gradient(135deg,#55050c,#c51c30,#50040a);
+}
+
+.team-name{
+    text-align:center;
+    font-size:42px;
+    font-weight:900;
+    padding-top:8px;
+}
+
+.logo{
+    position:absolute;
+    left:20px;
+    top:38px;
+
+    width:125px;
+    height:125px;
+
+    border-radius:50%;
+    border:7px solid #ffd92f;
+
+    background:#111;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:70px;
+
+    box-shadow:0 0 20px #000;
+}
+
+.team2 .logo{
+    left:auto;
+    right:20px;
+}
+
+.score{
+    position:absolute;
+    left:160px;
+    top:60px;
+
+    font-size:70px;
+    font-weight:1000;
+
+    color:#ffe51b;
+
+    text-shadow:
+        3px 3px 0 #000,
+        0 0 10px #000;
+}
+
+.team2 .score{
+    left:20px;
+    right:160px;
+    text-align:right;
+    color:white;
+    font-size:43px;
+}
+
+.overs{
+    position:absolute;
+    right:20px;
+    bottom:18px;
+
+    font-size:30px;
+    font-weight:900;
+}
+
+/* OVER */
+
+.over{
+    border:3px solid #ffd92f;
+    border-radius:18px;
 
     background:
-        linear-gradient(135deg,
-        rgba(10, 20, 60, 0.97),
-        rgba(25, 5, 70, 0.96));
+        linear-gradient(#050505,#222);
 
-    border-radius: 22px;
-
-    border: 2px solid rgba(255,255,255,0.18);
-
-    box-shadow:
-        0 15px 45px rgba(0,0,0,0.55),
-        inset 0 0 30px rgba(255,255,255,0.04);
-
-    overflow: hidden;
+    text-align:center;
 }
 
-/* TOP BAR */
+.over h1{
+    margin-top:42px;
+    font-size:64px;
+}
 
-.topbar {
-    height: 42px;
+.over-number{
+    margin-top:8px;
+    font-size:42px;
+    font-weight:900;
+    color:#ffe51b;
+}
 
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+/* RED BAR */
 
-    padding: 0 22px;
+.info{
+    margin-top:10px;
+
+    height:70px;
+
+    border:3px solid #ffd92f;
+    border-radius:10px;
 
     background:
-        linear-gradient(90deg,
-        #ff3b30,
-        #ff9500,
-        #ffcc00);
+        linear-gradient(
+            90deg,
+            #850000,
+            #ed1d24,
+            #850000
+        );
 
-    font-weight: bold;
+    display:grid;
+
+    grid-template-columns:
+        1fr
+        1fr
+        1fr;
+
+    align-items:center;
+
+    padding:0 20px;
+
+    font-size:30px;
+
+    font-weight:900;
 }
 
-.live {
-    display: flex;
-    align-items: center;
-    gap: 8px;
+.center{
+    text-align:center;
 }
 
-.live-dot {
-    width: 10px;
-    height: 10px;
-    background: white;
-    border-radius: 50%;
-    animation: blink 1s infinite;
+.right{
+    text-align:right;
 }
 
-@keyframes blink {
-    50% {
-        opacity: 0.25;
-    }
-}
+/* LAST WICKET */
 
-.match-title {
-    font-size: 16px;
-    letter-spacing: 1px;
-}
+.last{
+    margin-top:8px;
 
-/* SCORE AREA */
+    height:60px;
 
-.main {
-    display: grid;
-    grid-template-columns: 230px 1fr 230px;
+    border:2px solid white;
 
-    min-height: 145px;
-    align-items: center;
-
-    padding: 15px 25px;
-}
-
-/* TEAM */
-
-.team {
-    text-align: center;
-}
-
-.team-name {
-    font-size: 23px;
-    font-weight: 800;
-}
-
-.team-flag {
-    font-size: 38px;
-    margin-bottom: 4px;
-}
-
-/* SCORE */
-
-.score {
-    text-align: center;
-}
-
-.runs {
-    font-size: 58px;
-    line-height: 1;
-
-    font-weight: 900;
+    border-radius:8px;
 
     background:
-        linear-gradient(90deg,#00e5ff,#ffffff,#ffea00);
+        linear-gradient(
+            90deg,
+            #202020,
+            #653765,
+            #202020
+        );
 
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    display:flex;
+    align-items:center;
+
+    padding:0 20px;
+
+    font-size:28px;
+
+    font-weight:900;
 }
 
-.overs {
-    margin-top: 7px;
-
-    font-size: 17px;
-    color: #d7dcff;
+.yellow{
+    color:#ffe72b;
+    margin-left:10px;
 }
 
-/* PLAYER */
+/* OVERS */
 
-.players {
-    border-left: 1px solid rgba(255,255,255,0.18);
-    padding-left: 22px;
+.overs-row{
+    margin-top:9px;
+
+    display:grid;
+
+    grid-template-columns:
+        1.15fr
+        1fr
+        1fr;
+
+    gap:9px;
 }
 
-.player {
-    display: flex;
-    justify-content: space-between;
+.over-box{
+    height:70px;
 
-    margin: 7px 0;
+    border:3px solid #e7d33b;
 
-    font-size: 16px;
+    border-radius:9px;
+
+    background:#07345f;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:8px;
+
+    padding:7px 12px;
+
+    overflow:hidden;
 }
 
-.player strong {
-    color: #00e5ff;
+.over-title{
+    color:#ffe83b;
+
+    font-size:22px;
+
+    font-weight:900;
+
+    white-space:nowrap;
+}
+
+.ball{
+    min-width:40px;
+
+    height:40px;
+
+    border-radius:7px;
+
+    border:2px solid #e6d33e;
+
+    background:#151515;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-size:21px;
+
+    font-weight:900;
+}
+
+.ball-four{
+    background:#168cdc;
+}
+
+.ball-six{
+    background:#ffe019;
+    color:#111;
+}
+
+.ball-wicket{
+    background:#ed1d35;
+}
+
+/* PLAYER CARDS */
+
+.players{
+    margin-top:9px;
+
+    display:grid;
+
+    grid-template-columns:
+        1fr
+        1fr
+        1fr;
+
+    gap:9px;
+}
+
+.card{
+    height:235px;
+
+    border:3px solid #e5d34c;
+
+    border-radius:13px;
+
+    overflow:hidden;
+
+    position:relative;
+
+    background:
+        linear-gradient(
+            145deg,
+            #1163a2,
+            #0a315f,
+            #061c3c
+        );
+}
+
+.bowler{
+    background:
+        linear-gradient(
+            145deg,
+            #a91d2e,
+            #68101b,
+            #35050b
+        );
+}
+
+.card-title{
+    height:45px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    background:#0005;
+
+    font-size:25px;
+
+    font-weight:1000;
+}
+
+.player{
+    display:grid;
+
+    grid-template-columns:
+        145px
+        1fr;
+
+    align-items:center;
+
+    padding:8px 14px;
+}
+
+.avatar{
+    font-size:100px;
+
+    text-align:center;
+}
+
+.player-name{
+    font-size:32px;
+
+    font-weight:1000;
+}
+
+.player-score{
+    margin-top:5px;
+
+    font-size:50px;
+
+    font-weight:1000;
+}
+
+.stats{
+    position:absolute;
+
+    left:0;
+    right:0;
+    bottom:0;
+
+    height:54px;
+
+    background:#050505;
+
+    border-top:2px solid white;
+
+    display:grid;
+
+    grid-template-columns:
+        1fr
+        1fr
+        1fr;
+
+    align-items:center;
+
+    text-align:center;
+
+    font-size:23px;
+
+    font-weight:900;
+}
+
+.stats b{
+    color:#ffe51c;
+}
+
+/* PROBABILITY */
+
+.probability{
+    margin-top:9px;
+
+    width:420px;
+
+    height:52px;
+
+    display:flex;
+
+    border:2px solid white;
+
+    border-radius:8px;
+
+    overflow:hidden;
+
+    font-size:22px;
+
+    font-weight:1000;
+}
+
+.india{
+    width:70%;
+
+    padding:12px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #ef163e,
+            #ff1b9c
+        );
+}
+
+.australia{
+    width:30%;
+
+    padding:12px;
+
+    text-align:right;
+
+    background:
+        linear-gradient(
+            90deg,
+            #293cff,
+            #075cff
+        );
 }
 
 /* BOTTOM */
 
-.bottom {
-    display: flex;
-    justify-content: center;
-    gap: 35px;
+.bottom{
+    margin-top:9px;
 
-    padding: 9px 15px;
+    height:56px;
 
-    background: rgba(0,0,0,0.25);
+    border:2px solid #f0d83e;
 
-    font-size: 14px;
-}
+    border-radius:8px;
 
-.stat {
-    color: #cfd5ff;
-}
+    background:
+        linear-gradient(
+            90deg,
+            #a70b14,
+            #ff7800,
+            #a70b14
+        );
 
-.stat strong {
-    color: white;
-}
+    display:flex;
 
-/* BALLS */
+    align-items:center;
 
-.balls {
-    display: flex;
-    gap: 6px;
-    justify-content: center;
-}
+    justify-content:space-between;
 
-.ball {
-    width: 25px;
-    height: 25px;
+    padding:0 20px;
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    font-size:25px;
 
-    border-radius: 50%;
-
-    font-size: 12px;
-    font-weight: bold;
-
-    background: #3a416d;
-}
-
-.ball.four {
-    background: #00aaff;
-}
-
-.ball.six {
-    background: #9b30ff;
-}
-
-.ball.wicket {
-    background: #ff304f;
-}
-
-.ball.dot {
-    background: #555b7d;
+    font-weight:900;
 }
 </style>
 </head>
 
 <body>
 
-<div class="scoreboard">
+<div class="container">
 
-    <!-- TOP -->
+<!-- TOP -->
 
-    <div class="topbar">
+<div class="top">
 
-        <div class="live">
-            <span class="live-dot"></span>
-            LIVE
+    <div class="team">
+
+        <div class="team-name">
+            INDIA
         </div>
 
-        <div class="match-title">
-            🏏 INTERNATIONAL CRICKET
+        <div class="logo">
+            🇮🇳
         </div>
 
-        <div>
-            T20
+        <div class="score" id="score">
+            187-4
+        </div>
+
+        <div class="overs" id="overs">
+            18.2 OV
         </div>
 
     </div>
 
 
-    <!-- MAIN -->
+    <div class="over">
 
-    <div class="main">
+        <h1>
+            OVER
+        </h1>
 
-        <!-- TEAM -->
-
-        <div class="team">
-
-            <div class="team-flag">
-                🇮🇳
-            </div>
-
-            <div class="team-name">
-                INDIA
-            </div>
-
+        <div
+            class="over-number"
+            id="overNumber"
+        >
+            18.2
         </div>
 
+    </div>
 
-        <!-- SCORE -->
+
+    <div class="team team2">
+
+        <div class="team-name">
+            AUSTRALIA
+        </div>
+
+        <div class="logo">
+            🇦🇺
+        </div>
 
         <div class="score">
+            BOWLING
+        </div>
 
-            <div class="runs">
-                187/4
+    </div>
+
+</div>
+
+
+<!-- INFO -->
+
+<div class="info">
+
+    <div>
+        CRR:
+        <span id="crr">
+            10.20
+        </span>
+    </div>
+
+    <div class="center">
+        P'SHIP:
+        <span id="partnership">
+            42 (23)
+        </span>
+    </div>
+
+    <div class="right">
+        RRR:
+        <span id="rrr">
+            8.45
+        </span>
+    </div>
+
+</div>
+
+
+<!-- LAST WICKET -->
+
+<div class="last">
+
+    LAST-W:
+
+    <span
+        class="yellow"
+        id="lastWicket"
+    >
+        Rahul 34 (22)
+    </span>
+
+</div>
+
+
+<!-- OVER HISTORY -->
+
+<div class="overs-row">
+
+    <div class="over-box">
+
+        <span class="over-title">
+            THIS OVER:
+        </span>
+
+        <span class="ball">1</span>
+
+        <span class="ball ball-four">
+            4
+        </span>
+
+        <span class="ball ball-wicket">
+            W
+        </span>
+
+        <span class="ball">1</span>
+
+        <span class="ball">1</span>
+
+        <span class="ball ball-six">
+            6
+        </span>
+
+        <b>
+            =13
+        </b>
+
+    </div>
+
+
+    <div class="over-box">
+
+        <span class="over-title">
+            OVER 17
+        </span>
+
+        <span class="ball ball-four">
+            4
+        </span>
+
+        <span class="ball">
+            2
+        </span>
+
+        <span class="ball">
+            1
+        </span>
+
+        <span class="ball ball-four">
+            4
+        </span>
+
+        <span class="ball ball-four">
+            4
+        </span>
+
+        <b>
+            =15
+        </b>
+
+    </div>
+
+
+    <div class="over-box">
+
+        <span class="over-title">
+            OVER 16
+        </span>
+
+        <span class="ball">
+            1
+        </span>
+
+        <span class="ball">
+            1
+        </span>
+
+        <span class="ball ball-six">
+            6
+        </span>
+
+        <span class="ball">
+            1
+        </span>
+
+        <span class="ball">
+            2
+        </span>
+
+        <b>
+            =11
+        </b>
+
+    </div>
+
+</div>
+
+
+<!-- PLAYERS -->
+
+<div class="players">
+
+
+    <!-- BATSMAN 1 -->
+
+    <div class="card">
+
+        <div class="card-title">
+            BATTER 🏏 🇮🇳
+        </div>
+
+        <div class="player">
+
+            <div class="avatar">
+                🧔🏻
             </div>
 
-            <div class="overs">
-                18.2 OVERS
+            <div>
+
+                <div class="player-name">
+                    V KOHLI
+                </div>
+
+                <div class="player-score">
+                    72 (45)
+                </div>
+
             </div>
 
         </div>
 
+        <div class="stats">
 
-        <!-- PLAYERS -->
-
-        <div class="players">
-
-            <div class="player">
-                <span>Virat Kohli *</span>
-                <strong>72 (45)</strong>
+            <div>
+                4S:
+                <b>6</b>
             </div>
 
-            <div class="player">
-                <span>Ravindra Jadeja</span>
-                <strong>18 (11)</strong>
+            <div>
+                6S:
+                <b>2</b>
             </div>
 
-            <div class="player">
-                <span>Bowler: Starc</span>
-                <strong>1/32</strong>
+            <div>
+                SR:
+                <b>160.00</b>
             </div>
 
         </div>
@@ -309,30 +772,100 @@ body {
     </div>
 
 
-    <!-- BOTTOM -->
+    <!-- BATSMAN 2 -->
 
-    <div class="bottom">
+    <div class="card">
 
-        <div class="stat">
-            CRR <strong>10.20</strong>
+        <div class="card-title">
+            BATTER 🏏 🇮🇳
         </div>
 
-        <div class="stat">
-            RRR <strong>8.45</strong>
+        <div class="player">
+
+            <div class="avatar">
+                👨🏽
+            </div>
+
+            <div>
+
+                <div class="player-name">
+                    R JADEJA
+                </div>
+
+                <div class="player-score">
+                    18 (11)
+                </div>
+
+            </div>
+
         </div>
 
-        <div class="stat">
-            PARTNERSHIP <strong>42</strong>
+        <div class="stats">
+
+            <div>
+                4S:
+                <b>2</b>
+            </div>
+
+            <div>
+                6S:
+                <b>0</b>
+            </div>
+
+            <div>
+                SR:
+                <b>163.63</b>
+            </div>
+
         </div>
 
-        <div class="balls">
+    </div>
 
-            <div class="ball dot">1</div>
-            <div class="ball four">4</div>
-            <div class="ball dot">0</div>
-            <div class="ball six">6</div>
-            <div class="ball wicket">W</div>
-            <div class="ball dot">2</div>
+
+    <!-- BOWLER -->
+
+    <div class="card bowler">
+
+        <div class="card-title">
+            BOWLER 🎯 🇦🇺
+        </div>
+
+        <div class="player">
+
+            <div class="avatar">
+                👨🏻
+            </div>
+
+            <div>
+
+                <div class="player-name">
+                    M STARC
+                </div>
+
+                <div class="player-score">
+                    1-32 (3.2)
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="stats">
+
+            <div>
+                MAID:
+                <b>0</b>
+            </div>
+
+            <div>
+                ECON:
+                <b>9.60</b>
+            </div>
+
+            <div>
+                WD:
+                <b>1</b>
+            </div>
 
         </div>
 
@@ -340,6 +873,67 @@ body {
 
 </div>
 
+
+<!-- WIN PROBABILITY -->
+
+<div class="probability">
+
+    <div class="india">
+        INDIA 78%
+    </div>
+
+    <div class="australia">
+        AUS 22%
+    </div>
+
+</div>
+
+
+<!-- BOTTOM -->
+
+<div class="bottom">
+
+    <span>
+        LAST BALL:
+        <b>6</b>
+    </span>
+
+    <span>
+        BOUNDARIES:
+        <b>8×4</b>
+        &nbsp;
+        <b>2×6</b>
+    </span>
+
+    <span>
+        PARTNERSHIP:
+        <b>42 (23)</b>
+    </span>
+
+</div>
+
+</div>
+
+
+<!--
+==================================================
+AUTOMATIC SCORE DATA WILL BE CONNECTED HERE
+==================================================
+
+Later we will replace the demo values with
+real live cricket API data.
+
+Example:
+
+updateScore({
+    score: "187-4",
+    overs: "18.2",
+    crr: "10.20",
+    rrr: "8.45"
+});
+
+==================================================
+-->
+
 </body>
 </html>
-```
